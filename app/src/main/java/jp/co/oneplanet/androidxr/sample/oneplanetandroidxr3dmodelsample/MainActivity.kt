@@ -50,6 +50,7 @@ import androidx.xr.scenecore.SpatialCapabilities
 import jp.co.oneplanet.androidxr.sample.oneplanetandroidxr3dmodelsample.ui.theme.OnePlanetAndroidXR3DModelSampleTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -134,6 +135,7 @@ fun ModelViewButton() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 xrSession.requestFullSpaceMode()
+                delay(500)
                 val gltfModelFuture = withContext(Dispatchers.Main) {
                     xrSession.createGltfResourceAsync("models/CesiumMan.glb")
                 }
@@ -145,6 +147,8 @@ fun ModelViewButton() {
                         gltfEntity.setPose(Pose(modelPosition))
                         gltfEntity.setScale(1f)
                         gltfEntity.startAnimation(true)
+                    } else {
+                        print("3Dモデルが生成できない。")
                     }
                 }
             } catch (e: Exception) {
